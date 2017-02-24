@@ -1,0 +1,4 @@
+tornado
+pymongo==2.8
+motor==0.6.2
+git+https://github.com/sourcepirate/motorengine.git
