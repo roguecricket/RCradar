@@ -3,6 +3,7 @@ import L from 'leaflet';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import Control from 'react-leaflet-control';
 import Box from './placebox';
+import Fab from './fabutton';
 import Api from '../../rest/api';
 
 let MAX_RADIOUS = 5000;
@@ -38,6 +39,8 @@ class OpenMap extends Component{
            markers: mks
          })
        });
+     }, null, {
+       timeout: 5000
      });
   }
 
@@ -63,6 +66,7 @@ class OpenMap extends Component{
       {
         this.state.markers.map((mark) => (<Marker icon={this.markers.active} position={mark} />))
       }
+      <Fab />
       <Box onSelect={this.setCursor.bind(this)}/>
   </Map>)
   }
