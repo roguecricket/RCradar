@@ -5,6 +5,7 @@ import Control from 'react-leaflet-control';
 import Box from './placebox';
 import Fab from './fabutton';
 import Api from '../../rest/api';
+import PopOver from './popup';
 
 let MAX_RADIOUS = 5000;
 
@@ -14,7 +15,8 @@ class OpenMap extends Component{
     this.state = {
       position: [0, 0],
       markers: [],
-      zoom: 30
+      zoom: 30,
+      onModelShow: true
     }
 
     this.markers = {
@@ -66,7 +68,9 @@ class OpenMap extends Component{
       {
         this.state.markers.map((mark) => (<Marker icon={this.markers.active} position={mark} />))
       }
-      <Fab />
+      <Fab onClick={this.onFabClick.bind(this)}/>
+      <PopOver isShowingModal={this.state.onModelShow}
+             handleClose={this.onModelClose.bind(this)} />
       <Box onSelect={this.setCursor.bind(this)}/>
   </Map>)
   }
@@ -75,6 +79,18 @@ class OpenMap extends Component{
     console.log(suggest);
     this.setState({
       position: [suggest.location.lat, suggest.location.lng]
+    })
+  }
+
+  onModelClose(){
+    this.setState({
+      onModelShow: false
+    })
+  }
+
+  onFabClick(){
+    this.setState({
+      onModelShow: true
     })
   }
 

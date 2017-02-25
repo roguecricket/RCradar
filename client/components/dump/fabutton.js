@@ -7,7 +7,7 @@ class FabButton extends Component{
   }
 
   render(){
-    return (<button className="fab">+</button>)
+    return (<button className="fab" onClick={this.props.onClick}>+</button>)
   }
 }
 
