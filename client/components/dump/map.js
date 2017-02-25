@@ -61,7 +61,6 @@ class OpenMap extends Component{
           />
       <Marker icon={this.markers.home} position={this.state.position} />
       {
-        console.log(this.state.markers);
         this.state.markers.map((mark) => (<Marker icon={this.markers.active} position={mark} />))
       }
       <Box onSelect={this.setCursor.bind(this)}/>
