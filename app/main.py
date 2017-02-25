@@ -8,7 +8,9 @@ from tornado.options import options
 from motorengine import connect
 from config import app_config
 from uuid import uuid4
-from handlers import CallbackHandler, IndexHandler, LogoutHandler, TournamentHandler
+from tornado.web import StaticFileHandler
+from handlers import CallbackHandler, IndexHandler, \
+    LogoutHandler, TournamentHandler, GzippedContentHandler
 
 
 define("port", default=8080, help="run on given port", type=int)
@@ -24,11 +26,15 @@ if __name__ == "__main__":
                   (r'/callback', CallbackHandler),
                   (r'/logout', LogoutHandler),
                   (r'/tournament', TournamentHandler),
-                  (r'/tournament/(?P<tid>.*?)/?$', TournamentHandler)],
+                  (r'/tournament/(?P<tid>.*?)/?$', TournamentHandler),
+                  (r'/static/(.*)', GzippedContentHandler,
+                   {"path": os.path.join(os.path.dirname(__file__), "../build")}),
+                  (r'/assets/(.*)', StaticFileHandler,
+                   {"path": os.path.join(os.path.dirname(__file__), "../assets")})],
         template_path=os.path.join(os.path.dirname(__file__),
                                    "../templates"),
-        static_path=os.path.join(os.path.dirname(__file__), "../build"),
         gzip=True,
+        debug=True,
         cookie_secret=str(uuid4()))
     http_server = httpserver.HTTPServer(app)
     http_server.listen(options.port)

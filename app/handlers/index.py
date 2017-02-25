@@ -16,4 +16,4 @@ class LogoutHandler(RequestHandler):
 
     async def get(self):
         self.clear_all_cookies()
-        self.finish()
+        self.redirect('/')

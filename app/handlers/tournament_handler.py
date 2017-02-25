@@ -18,7 +18,7 @@ class TournamentHandler(RequestHandler):
         limit = self.get_argument('limit', 10)
         page = self.get_argument('page', 0)
 
-        lat, lon, radious = int(lat), int(lon), int(radious)
+        lat, lon, radious = float(lat), float(lon), int(radious)
         limit, skip = int(limit), int(page) * int(limit)
         results = await Tournaments.nearby(lat, lon, radious, limit=limit,
                                            skip=skip)
