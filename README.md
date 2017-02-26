@@ -2,7 +2,7 @@
 
 Get cricket tournament details near by. And never miss it.
 
-[![rcradar](https://cldup.com/-WfwzGv9C7.gif)](https://cldup.com/K-RwwBDC_c.png)
+[![rcradar](https://cldup.com/K-RwwBDC_c.png)](https://cldup.com/K-RwwBDC_c.png)
 
 ## Uses
 
