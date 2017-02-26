@@ -1,20 +1,32 @@
-import React, {PropTypes} from 'react';
-import {ModalContainer, ModalDialog} from 'react-modal-dialog';
+import React from 'react';
+import Rodal from 'rodal';
 
-class Popup extends React.Component {
-  render() {
-    return <div onClick={this.handleClick}>
-      {
-        this.props.isShowingModal &&
-        <ModalContainer backgroundColor="rgba(0, 0, 0, 0.25)" onClose={this.props.handleClose}>
-          <ModalDialog className="model" onClose={this.props.handleClose}>
-            <h1>Dialog Content</h1>
-            <p>More Content. Anything goes here</p>
-          </ModalDialog>
-        </ModalContainer>
-      }
-    </div>;
-  }
+import 'rodal/lib/rodal.css';
+import '../../../assets/css/popover.css';
+
+class PopOver extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <div>
+                <Rodal  height={240} visible={this.props.isShowingModal} onClose={this.props.handleClose}>
+                  <div className="header">{this.props.title}</div>
+                  <div style={{marginBottom: 10}}>{this.props.children}</div>
+                  <button className="rodal-confirm-btn" onClick={this.props.onOk}>{this.props.successButton}</button>
+                  <button className="rodal-cancel-btn" onClick={this.props.onCancel}>{this.props.cancelButton}</button>
+                </Rodal>
+            </div>
+        )
+    }
 }
 
-export default Popup;
+PopOver.defaultProps = {
+  successButton: 'ok',
+  cancelButton: 'close'
+}
+
+export default PopOver;

@@ -26,7 +26,7 @@ class CallbackHandler(RequestHandler):
             access_token = body['access_token']
             user = AuthUser(app_config.get('DOMIAN'), access_token)
             user_info = await user.info()
-            self.set_secure_cookie('_T_GA', dumps(user_info))
+            self.set_secure_cookie('_T_GA', user_info)
             self.redirect('/')
         else:
             self.redirect('/')

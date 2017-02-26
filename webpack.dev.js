@@ -3,6 +3,7 @@ let webpack = require('webpack');
 var CompressionPlugin = require("compression-webpack-plugin");
 
 module.exports = Object.assign({}, baseConfig, {
+    watch: true,
     plugins: [
         new webpack.optimize.AggressiveMergingPlugin(),
         new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),

@@ -5,7 +5,7 @@ import Control from 'react-leaflet-control';
 import Box from './placebox';
 import Fab from './fabutton';
 import Api from '../../rest/api';
-import PopOver from './popup';
+import PopOver from './createForm';
 
 let MAX_RADIOUS = 5000;
 
@@ -16,7 +16,7 @@ class OpenMap extends Component{
       position: [0, 0],
       markers: [],
       zoom: 30,
-      onModelShow: true
+      onModelShow: false
     }
 
     this.markers = {
@@ -35,8 +35,8 @@ class OpenMap extends Component{
          position: [latitude, longitude]
        });
        Api.nearBy(latitude, longitude, 500).then((vals) => {
-         const mks = vals.data.map((pt) => (pt.location.coordinates));
-         console.log(mks);
+         const mks = vals.data.filter((pt) => (new Date(pt.event_on * 1000) > new Date()))
+                              .map((pt) => ({data: pt, cords: pt.location.coordinates}));
          this.setState({
            markers: mks
          })
@@ -66,11 +66,23 @@ class OpenMap extends Component{
           />
       <Marker icon={this.markers.home} position={this.state.position} />
       {
-        this.state.markers.map((mark) => (<Marker icon={this.markers.active} position={mark} />))
+        this.state.markers.map((mark) => (<Marker icon={this.markers.active} position={mark.cords}>
+          <Popup>
+              <div>
+                 <p><b>Title:</b>{" " +mark.data.name}</p>
+                 <p><b>Contact:</b>{" " +mark.data.contact_no}</p>
+                 <p><b>Registration closes on:</b>{" " +new Date(mark.data.closes_on*1000).toDateString()}</p>
+              </div>
+          </Popup>
+        </Marker>))
       }
       <Fab onClick={this.onFabClick.bind(this)}/>
       <PopOver isShowingModal={this.state.onModelShow}
-             handleClose={this.onModelClose.bind(this)} />
+             handleClose={this.onModelClose.bind(this)}
+             onNew={this.onNew.bind(this)}
+             onNewCancel={this.onModelClose.bind(this)}>
+
+      </PopOver>
       <Box onSelect={this.setCursor.bind(this)}/>
   </Map>)
   }
@@ -94,6 +106,15 @@ class OpenMap extends Component{
     })
   }
 
+  onNew(state){
+     const {position} = this.state;
+     let new_obj = {...state, lat: position[0], lon: position[1]};
+     return Api.new(new_obj).then((res) => {
+       this.setState({
+         onModelShow: false
+       })
+     })
+  }
 }
 
 export default OpenMap;

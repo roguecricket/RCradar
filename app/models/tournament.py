@@ -13,7 +13,7 @@ class Tournaments(MotorEngineDocument):
     location = GeoPointField(required=True)
     contact_no = StringField(required=True)
     closes_on = DateTimeField(required=True)
-    event_duration = IntField(required=True)
+    event_duration = IntField(required=True, default=1)
     created_by = StringField(required=True)
     address = StringField(required=True)
     reported_spams = IntField(default=0)

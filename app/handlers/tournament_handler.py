@@ -32,11 +32,17 @@ class TournamentHandler(RequestHandler):
         name = body.get('title')
         lat = body.get('lat')
         lon = body.get('lon')
+        uinfo = self.get_secure_cookie('_T_GA')
+        if uinfo:
+            print(uinfo)
+            temp = loads(uinfo.decode('utf-8'))
+            print(type(temp))
+            uinfo = temp.get("user_id")
         contact_no = body.get('contact_no')
         closes_on = body.get('closes_on', 0)
         event_duration = body.get('duration')
         event_start_on = body.get('starts_on', 0)
-        created_by = body.get('created_by')
+        created_by = body.get('created_by', uinfo)
         address = body.get('address')
         closes_on = datetime.fromtimestamp(int(closes_on) / 1000)
         event_start_on = datetime.fromtimestamp(int(event_start_on) / 1000)
@@ -56,6 +62,7 @@ class TournamentHandler(RequestHandler):
     async def put(self, tid):
         json = self.request.body.decode('utf-8')
         body = loads(json)
+        print(body)
         tournament = await Tournaments.get_by_id(tid)
         if tournament:
             for key, value in body.items():

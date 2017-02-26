@@ -6,9 +6,16 @@ const api = {
             params: {
                 lat: lat,
                 lon: lon,
-                radious: radious
+                radious: radious,
+                limit: 50
             }
         })
+    },
+
+    new: function(state) {
+        return axios.post("/tournament", state, {
+            headers: {'Content-Type': 'application/json'}
+        });
     }
 }
 
