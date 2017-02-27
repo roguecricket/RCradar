@@ -1,9 +1,12 @@
-import {Router, Route, Link, browserHistory} from 'react-router';
+import {Router, Route, IndexRoute, Link, browserHistory} from 'react-router';
 import Map from './components/dump/map';
+import App from './components/smart/App';
 
 const routes = (
   <Router history={browserHistory}>
-      <Route path="/" component={Map}/>
+      <Route path="/" component={App}>
+        <IndexRoute component={Map} />
+      </Route>
   </Router>
 )
 

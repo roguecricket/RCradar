@@ -7,6 +7,8 @@ import Fab from './fabutton';
 import Api from '../../rest/api';
 import PopOver from './createForm';
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 let MAX_RADIOUS = 5000;
 
 class OpenMap extends Component{
