@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import position from './position';
+import home from './home';
 
 export const reducers = combineReducers({
-  position
+  home
 });

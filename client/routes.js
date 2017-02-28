@@ -1,6 +1,6 @@
 import {Router, Route, IndexRoute, Link, browserHistory} from 'react-router';
-import Map from './components/dump/map';
-import App from './components/smart/App';
+import Map from './components/elements/map'; // should be moved to containers soon
+import App from './components/containers/App';
 
 const routes = (
   <Router history={browserHistory}>
