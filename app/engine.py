@@ -39,3 +39,21 @@ class ModelDictJSONEnocder(JSONEncoder):
         elif isinstance(obj, ObjectId):
             return str(obj)
         return JSONEncoder.default(self, obj)
+
+
+class Beam(object):
+
+    def __init__(self, *args, **kwargs):
+        self._active = True
+
+    async def __aiter__(self):
+        return self
+
+    async def __anext__(self):
+        while self._active:
+            data = await self.radiate()
+            await self.on_radiate(data)
+            if not data:
+                self._active = False
+                raise StopAsyncIteration
+            return data

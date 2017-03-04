@@ -36,7 +36,7 @@ if __name__ == "__main__":
         template_path=os.path.join(os.path.dirname(__file__),
                                    "../templates"),
         gzip=True,
-        debug=False,
+        debug=True,
         cookie_secret=str(uuid4()),
         jwt_secret=str(uuid4()))
     http_server = httpserver.HTTPServer(app)

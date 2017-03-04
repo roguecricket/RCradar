@@ -4,6 +4,7 @@ import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
 import Control from 'react-leaflet-control';
 import Box from './placebox';
 import Fab from './fabutton';
+import Spinner from './spinner';
 import PopOver from './createForm';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -27,7 +28,7 @@ class OpenMap extends Component {
     }
 
     componentWillMount(){
-
+      this.props.initHome();
     }
 
     render(){
@@ -52,22 +53,34 @@ class OpenMap extends Component {
               </Popup>
              </Marker>))
            }
+           {
+             this.props.isLoading && <Spinner />
+           }
           <Fab />
-          <Box />
+          <Box onSelect={this.setCursor.bind(this)} position={position}/>
       </Map>)
     }
+
+   setCursor(suggest){
+     this.props.updateHome({
+       lat: suggest.location.lat,
+       lon: suggest.location.lng
+     });
+     this.props.fetchMarkers();
+   }
 }
 
 OpenMap.defaultProps = {
   position: [0, 0],
-  zoom: 20,
+  zoom: 10,
   markers: []
 }
 
 let mapStateToProps = (state) => ({
   position: [state.home.lat, state.home.lon],
-  zoom: 20,
-  markers: []
+  zoom: 10,
+  markers: state.markers.msg.map((mark) => ({data: mark, cords: [...mark.location.coordinates]})),
+  isLoading: state.markers.isLoading
 })
 
 let mapDispatchToProps = (dispatch) => {

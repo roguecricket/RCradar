@@ -57,6 +57,7 @@
     "redux-logger": "^2.8.1",
     "redux-saga": "^0.14.3",
     "redux-slider-monitor": "^1.0.7",
-    "rodal": "^1.4.0"
+    "rodal": "^1.4.0",
+    "spin.js": "^2.3.2"
   }
 }

@@ -14,7 +14,7 @@ var Box = React.createClass({ // eslint-disable-line
       <div className="searchBox">
          <div className="searchBox__title">Enter your place:</div>
          <Geosuggest
-           location={new google.maps.LatLng(52.363632, 4.926588)}
+           location={new google.maps.LatLng(this.props.position.lat, this.props.position.lon)}
            radius="20"
            placeholder="Let play?"
            inputClassName="searchBox__input"

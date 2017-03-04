@@ -32,7 +32,7 @@ class HTTPEventHandler(HTTPRequestHandler):
         event_name = self.get_argument("event", None)
         lat = self.get_argument('lat', 0)
         lon = self.get_argument('lon', 0)
-        radious = self.get_argument('radiou', 10)
+        radious = self.get_argument('radious', 10)
         lat, lon, radious = float(lat), float(lon), int(radious)
         if not event_name:
             raise Exception("No Event specified")

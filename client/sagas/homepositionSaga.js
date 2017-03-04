@@ -18,6 +18,7 @@ function getLocationInfo(){
 function* where_AM_I(action){
   const location = yield call(getLocationInfo);
   yield put({type: 'UPDATE_HOME_POSITION', location});
+  yield put({type: 'INIT_MARKERS'});
 }
 
 
