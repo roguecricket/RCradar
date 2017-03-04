@@ -1,11 +1,12 @@
 from motorengine.document import MotorEngineDocument
 from motorengine.fields import *
 from pymongo import GEOSPHERE, GEO2D
+from models.user import User
 
 
 class Tournaments(MotorEngineDocument):
 
-    __indexes__ = [('location', GEO2D)]
+    __indexes__ = [('location', GEOSPHERE)]
 
     name = StringField(required=True)
     tid = StringField(required=True)
@@ -14,7 +15,7 @@ class Tournaments(MotorEngineDocument):
     contact_no = StringField(required=True)
     closes_on = DateTimeField(required=True)
     event_duration = IntField(required=True, default=1)
-    created_by = StringField(required=True)
+    created_by = ReferenceField(reference_document_type=User)
     address = StringField(required=True)
     reported_spams = IntField(default=0)
 

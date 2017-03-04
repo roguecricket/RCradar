@@ -1,6 +1,9 @@
 from json import JSONEncoder
 from datetime import datetime
 from motorengine.document import MotorEngineDocument
+from traceback import format_exc
+from tornado.log import logging
+from bson import ObjectId
 
 
 def requires_login(f):
@@ -14,6 +17,17 @@ def requires_login(f):
     return inner
 
 
+def safty_handler(f):
+    async def inner(self, *args, **kwargs):
+        try:
+            data = await f(self, *args, **kwargs)
+        except Exception as e:
+            self.set_status(500)
+            self.render_json({"error": "Invalid Request"})
+            logging.info(format_exc())
+    return inner
+
+
 class ModelDictJSONEnocder(JSONEncoder):
 
     def default(self, obj):
@@ -21,4 +35,6 @@ class ModelDictJSONEnocder(JSONEncoder):
             return obj.to_son()
         elif isinstance(obj, datetime):
             return obj.timestamp()
+        elif isinstance(obj, ObjectId):
+            return str(obj)
         return JSONEncoder.default(self, obj)

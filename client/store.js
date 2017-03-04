@@ -4,12 +4,9 @@ import { reducers } from "./reducers/index";
 import createLogger from "redux-logger";
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from './sagas';
-
 let enhancers;
-
 const sagaMiddleWare = createSagaMiddleware();
 const middleware = applyMiddleware(sagaMiddleWare);
-
 if(process.env.NODE_ENV == 'production'){
   enhancers =  compose(middleware);
 }

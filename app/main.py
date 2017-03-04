@@ -34,8 +34,9 @@ if __name__ == "__main__":
         template_path=os.path.join(os.path.dirname(__file__),
                                    "../templates"),
         gzip=True,
-        debug=True,
-        cookie_secret=str(uuid4()))
+        debug=False,
+        cookie_secret=str(uuid4()),
+        jwt_secret=str(uuid4()))
     http_server = httpserver.HTTPServer(app)
     http_server.listen(options.port)
     ioloop.IOLoop.instance().start()

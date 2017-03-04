@@ -1,9 +1,11 @@
 from tornado.web import RequestHandler
 from json import dumps, loads
-from shortcuts import requires_login, ModelDictJSONEnocder
+from shortcuts import safty_handler, ModelDictJSONEnocder
 from models.tournament import Tournaments
+from models.user import User
 from datetime import datetime
 from uuid import uuid4
+from jwt import decode, encode
 
 
 class TournamentHandler(RequestHandler):
@@ -11,6 +13,22 @@ class TournamentHandler(RequestHandler):
     def render_json(self, data):
         self.write(dumps(data, cls=ModelDictJSONEnocder))
 
+    async def prepare(self):
+        ss_cookie = self.get_secure_cookie('_T_GA')
+        ss_header = self.request.headers.get('Authorization')
+        ss_secret = self.settings['jwt_secret']
+        print(ss_header or ss_cookie)
+        auth_dict = decode(ss_header or ss_cookie,
+                           ss_secret,
+                           algorithm='HS256')
+        if not auth_dict:
+            self.user = None
+        else:
+            self.user = await User.get_by_id(auth_dict['id'])
+        print(self.user)
+        return
+
+    @safty_handler
     async def get(self):
         lat = self.get_argument('lat', 0)
         lon = self.get_argument('lon', 0)
@@ -25,24 +43,17 @@ class TournamentHandler(RequestHandler):
         self.set_header("Content-Type", "application/json")
         self.render_json(results)
 
+    @safty_handler
     async def post(self):
         json = self.request.body.decode('utf-8')
         body = loads(json)
-        print(body)
         name = body.get('title')
         lat = body.get('lat')
         lon = body.get('lon')
-        uinfo = self.get_secure_cookie('_T_GA')
-        if uinfo:
-            print(uinfo)
-            temp = loads(uinfo.decode('utf-8'))
-            print(type(temp))
-            uinfo = temp.get("user_id")
         contact_no = body.get('contact_no')
         closes_on = body.get('closes_on', 0)
         event_duration = body.get('duration')
         event_start_on = body.get('starts_on', 0)
-        created_by = body.get('created_by', uinfo)
         address = body.get('address')
         closes_on = datetime.fromtimestamp(int(closes_on) / 1000)
         event_start_on = datetime.fromtimestamp(int(event_start_on) / 1000)
@@ -53,12 +64,13 @@ class TournamentHandler(RequestHandler):
                         closes_on=closes_on,
                         event_duration=event_duration,
                         address=address,
-                        created_by=created_by)
-        t.location = [lat, lon]
+                        created_by=self.user,
+                        location=[lat, lon])
         res = await t.save()
         self.set_header("Content-Type", "application/json")
         self.render_json(res)
 
+    @safty_handler
     async def put(self, tid):
         json = self.request.body.decode('utf-8')
         body = loads(json)
