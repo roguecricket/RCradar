@@ -10,7 +10,8 @@ from config import app_config
 from uuid import uuid4
 from tornado.web import StaticFileHandler
 from handlers import CallbackHandler, IndexHandler, \
-    LogoutHandler, TournamentHandler, GzippedContentHandler
+    LogoutHandler, TournamentHandler, GzippedContentHandler, \
+    PointHandler
 
 
 define("port", default=8080, help="run on given port", type=int)
@@ -30,7 +31,8 @@ if __name__ == "__main__":
                   (r'/static/(.*)', GzippedContentHandler,
                    {"path": os.path.join(os.path.dirname(__file__), "../build")}),
                   (r'/assets/(.*)', StaticFileHandler,
-                   {"path": os.path.join(os.path.dirname(__file__), "../assets")})],
+                   {"path": os.path.join(os.path.dirname(__file__), "../assets")}),
+                  (r'/point', PointHandler)],
         template_path=os.path.join(os.path.dirname(__file__),
                                    "../templates"),
         gzip=True,

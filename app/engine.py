@@ -24,6 +24,7 @@ def safty_handler(f):
         except Exception as e:
             self.set_status(500)
             self.render_json({"error": "Invalid Request"})
+            self.finish()
             logging.info(format_exc())
     return inner
 

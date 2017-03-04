@@ -1,6 +1,6 @@
-from tornado.web import RequestHandler
+from handlers.base import HTTPRequestHandler
 from json import dumps, loads
-from shortcuts import safty_handler, ModelDictJSONEnocder
+from engine import safty_handler, ModelDictJSONEnocder
 from models.tournament import Tournaments
 from models.user import User
 from datetime import datetime
@@ -8,10 +8,7 @@ from uuid import uuid4
 from jwt import decode, encode
 
 
-class TournamentHandler(RequestHandler):
-
-    def render_json(self, data):
-        self.write(dumps(data, cls=ModelDictJSONEnocder))
+class TournamentHandler(HTTPRequestHandler):
 
     async def prepare(self):
         ss_cookie = self.get_secure_cookie('_T_GA')
