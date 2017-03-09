@@ -9,6 +9,8 @@ import PopOver from './createForm';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actionCreators from '../../actions';
+import '../../../assets/css/form.css';
+
 
 let MAX_RADIOUS = 5000;
 
@@ -56,7 +58,8 @@ class OpenMap extends Component {
            {
              this.props.isLoading && <Spinner />
            }
-          <Fab />
+          <PopOver isShowingModal={true} handleOk={this.onOk}/>
+          <Fab onClick={this.fabClick.bind(this)} />
           <Box onSelect={this.setCursor.bind(this)} position={position}/>
       </Map>)
     }
@@ -67,6 +70,14 @@ class OpenMap extends Component {
        lon: suggest.location.lng
      });
      this.props.fetchMarkers();
+   }
+
+   fabClick(e){
+     console.log(e);
+   }
+
+   onOk(user){
+     console.log(user);
    }
 }
 

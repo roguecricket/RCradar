@@ -14,3 +14,5 @@ class GzippedContentHandler(StaticFileHandler):
 
     def set_extra_headers(self, path):
         self.set_header('Content-Encoding', 'gzip')
+        self.set_header('Accept-Encoding', 'gzip')
+        self.set_header('Content-Type', 'text/javascript')

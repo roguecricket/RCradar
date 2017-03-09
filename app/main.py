@@ -1,22 +1,22 @@
 import os
-import tornado
-import tornado.web
-from tornado import ioloop
-from tornado import httpserver
-from tornado.options import define
-from tornado.options import options
-from motorengine import connect
 from config import app_config
 from uuid import uuid4
+
+import tornado
+import tornado.web
+from tornado import httpserver, ioloop
+from tornado.options import define, options
 from tornado.web import StaticFileHandler
-from handlers import CallbackHandler, IndexHandler, \
-    LogoutHandler, TournamentHandler, GzippedContentHandler, \
-    PointHandler
+
+from handlers import (CallbackHandler, GzippedContentHandler, IndexHandler,
+                      LogoutHandler, PointHandler, TournamentHandler)
+from motorengine import connect
 
 
 define("port", default=8080, help="run on given port", type=int)
 # Initializing the environmental variables.
-mongo_host = os.environ.get("MONOGO_HOST", "mongodb://localhost:27017/") + "toradar"
+mongo_host = os.environ.get(
+    "MONOGO_HOST", "mongodb://localhost:27017/") + "toradar"
 
 
 if __name__ == "__main__":
