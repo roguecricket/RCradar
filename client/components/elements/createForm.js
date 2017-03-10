@@ -74,8 +74,14 @@ class createForm extends Component{
           </LocalForm>);
   }
 
-  handleSubmit(e, data){
-    console.log(e, data);
+  handleSubmit(data){
+    data = {
+      ...data, 
+      starts_on: new Date(data.starts_on).getTime(),
+      closes_on: new Date(data.closes_on).getTime(),
+      duration: 1,
+    };
+    this.props.handleOk(data);
   }
 }
 

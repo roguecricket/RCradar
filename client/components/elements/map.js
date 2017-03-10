@@ -58,7 +58,10 @@ class OpenMap extends Component {
            {
              this.props.isLoading && <Spinner />
            }
-          <PopOver isShowingModal={true} handleOk={this.onOk}/>
+          <PopOver isShowingModal={this.props.isShowingModal}
+                    handleOk={this.onOk.bind(this)} 
+                    handleClose={this.onModelCancel.bind(this)}
+                    onCancel={this.onModelCancel.bind(this)}/>
           <Fab onClick={this.fabClick.bind(this)} />
           <Box onSelect={this.setCursor.bind(this)} position={position}/>
       </Map>)
@@ -73,11 +76,18 @@ class OpenMap extends Component {
    }
 
    fabClick(e){
-     console.log(e);
+     this.props.showModel();
    }
 
-   onOk(user){
-     console.log(user);
+   onOk(t){
+     console.log(t);
+     t.lat = this.props.position[0];
+     t.lon = this.props.position[1];
+     this.props.submitForm(t);
+   }
+
+   onModelCancel(){
+     this.props.hideModel();
    }
 }
 
@@ -91,7 +101,8 @@ let mapStateToProps = (state) => ({
   position: [state.home.lat, state.home.lon],
   zoom: 10,
   markers: state.markers.msg.map((mark) => ({data: mark, cords: [...mark.location.coordinates]})),
-  isLoading: state.markers.isLoading
+  isLoading: state.markers.isLoading,
+  isShowingModal: state.form.visible
 })
 
 let mapDispatchToProps = (dispatch) => {
