@@ -1,0 +1,31 @@
+web:
+  restart: always
+  build: ./
+  expose:
+    - "8080"
+  links:
+    - mongo:mongo
+  volumes:
+    - /app
+  env_file: .env
+  command:  bash -c "python /app/main.py"
+
+nginx:
+  restart: always
+  build: ./nginx/
+  ports:
+    - "80:80"
+  volumes:
+    - /etc/nginx/conf.d
+  volumes_from:
+    - web
+  links:
+    - web:web
+
+mongo:
+  restart: always
+  image: mongo
+  ports:
+    - "27017:27017"
+  volumes:
+    - /data/db:/data/db

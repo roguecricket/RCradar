@@ -3,3 +3,4 @@ __pycache__
 cenv
 node_modules
 .vscode
+data
