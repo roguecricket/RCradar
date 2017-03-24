@@ -1,4 +1,4 @@
-## RC RADAR [WIP]
+## RC RADAR
 
 Get cricket tournament details near by. And never miss it.
 
@@ -13,4 +13,4 @@ Get cricket tournament details near by. And never miss it.
 * leaflet
 
 ## License
-MIT
+MIT (Enjoy playing cricket)
