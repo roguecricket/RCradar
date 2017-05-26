@@ -15,7 +15,7 @@ class CallbackHandler(RequestHandler):
             'client_secret': app_config.get('CLIENT_SECRET'),
             'code': code,
             'grant_type': 'authorization_code',
-            'redirect_uri': 'http://localhost/callback'
+            'redirect_uri': app_config.get("REDIRECT_URL")
         }
         _url = "https://{domain}/oauth/token".format(domain=app_config.get("DOMIAN"))
         print(dumps(token_payload))
