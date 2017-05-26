@@ -15,7 +15,7 @@ from motorengine import connect
 
 define("port", default=8080, help="run on given port", type=int)
 # Initializing the environmental variables.
-mongo_host = os.environ.get("MONGO_HOST_ENV", "mongodb://localhost:27017/") + "toradar"
+mongo_host = os.environ.get("MONGO_HOST_ENV", "mongodb://localhost:27017/toradar")
 
 
 if __name__ == "__main__":
