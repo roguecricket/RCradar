@@ -1,0 +1,94 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  name: radar
+  namespace: cricradar
+  selfLink: /oapi/v1/namespaces/cricradar/deploymentconfigs/radar
+  uid: 87d70064-4233-11e7-be42-0a2a2b777307
+  resourceVersion: '75553849'
+  generation: 8
+  creationTimestamp: '2017-05-26T16:51:14Z'
+  labels:
+    app: radar
+  annotations:
+    openshift.io/generated-by: OpenShiftWebConsole
+spec:
+  strategy:
+    type: Rolling
+    rollingParams:
+      updatePeriodSeconds: 1
+      intervalSeconds: 1
+      timeoutSeconds: 600
+      maxUnavailable: 25%
+      maxSurge: 25%
+    resources: {}
+    activeDeadlineSeconds: 21600
+  triggers:
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - radar
+        from:
+          kind: ImageStreamTag
+          namespace: cricradar
+          name: 'radar:latest'
+        lastTriggeredImage: >-
+          172.30.254.23:5000/cricradar/radar@sha256:d197511ccc854dc3e978160094be6bf54384ae4e5692d3a8580b085e5ac590a0
+    - type: ConfigChange
+  replicas: 1
+  test: false
+  selector:
+    deploymentconfig: radar
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: radar
+        deploymentconfig: radar
+    spec:
+      containers:
+        - name: radar
+          image: >-
+            172.30.254.23:5000/cricradar/radar@sha256:d197511ccc854dc3e978160094be6bf54384ae4e5692d3a8580b085e5ac590a0
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: APP_FILE
+              value: app/main.py
+            - name: MONGO_HOST_ENV
+              value: 'mongodb://admin:admin@mongodb/toradar'
+            - name: AUTH_REDIRECT
+              value: >-
+                http://radar-cricradar.7e14.starter-us-west-2.openshiftapps.com/callback
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+status:
+  latestVersion: 4
+  observedGeneration: 8
+  replicas: 0
+  updatedReplicas: 0
+  availableReplicas: 0
+  unavailableReplicas: 2
+  details:
+    message: config change
+    causes:
+      - type: ConfigChange
+  conditions:
+    - type: Available
+      status: 'False'
+      lastUpdateTime: '2017-05-26T17:17:19Z'
+      lastTransitionTime: '2017-05-26T17:17:19Z'
+      message: Deployment config does not have minimum availability.
+    - type: Progressing
+      status: 'True'
+      lastUpdateTime: '2017-05-26T17:17:19Z'
+      lastTransitionTime: '2017-05-26T17:17:19Z'
+      reason: ReplicationControllerUpdated
+      message: replication controller "radar-4" is progressing

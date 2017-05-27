@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Route
+metadata:
+  name: radar
+  namespace: cricradar
+  selfLink: /oapi/v1/namespaces/cricradar/routes/radar
+  labels:
+    app: radar
+  annotations:
+    openshift.io/generated-by: OpenShiftWebConsole
+    openshift.io/host.generated: 'true'
+spec:
+  host: radar-cricradar.7e14.starter-us-west-2.openshiftapps.com
+  to:
+    kind: Service
+    name: radar
+    weight: 100
+  tls:
+    termination: edge    
+    insecureEdgeTerminationPolicy: Redirect        
+  port:
+    targetPort: 8080-tcp
+  wildcardPolicy: None
+status:
+  ingress:
+    - host: radar-cricradar.7e14.starter-us-west-2.openshiftapps.com
+      routerName: router1
+      conditions:
+        - type: Admitted
+          status: 'True'
+      wildcardPolicy: None
